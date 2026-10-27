@@ -1,0 +1,10 @@
+github_user: lagudo6
+laptop: MacBook Pro 14-inch 2023, macOS Sonoma 14.3
+date: 2026-10-27 16:50 UTC
+cpus_in_container: 14
+architecture: aarch64
+cpu: Apple - 
+kernel: 7.0.12-linuxkit
+docker_memory_kb: 8124000
+container_memory_limit: 2147483648
+container_swap_limit: 0
