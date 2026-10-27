@@ -1,34 +1,41 @@
 """Number of orders per region, quarter and order size (segments.csv)."""
 
 import os
-from datetime import datetime
-
 import pandas as pd
+import numpy as np
 
 DATA = os.environ.get("DATA", os.path.expanduser("~/data/sales_2025.csv"))
 OUT = os.environ.get("OUT", os.path.expanduser("~/data/out"))
 os.makedirs(OUT, exist_ok=True)
 
-orders = pd.read_csv(DATA, usecols=["order_date", "region", "quantity", "unit_price"])
+totals = None
 
+for chunk in pd.read_csv(
+    DATA,
+    usecols=["order_date", "region", "quantity", "unit_price"],
+    chunksize=100000
+):
+    quarter = pd.to_datetime(chunk["order_date"]).dt.quarter
+    value = chunk["quantity"] * chunk["unit_price"]
 
-def segment(order):
-    quarter = (datetime.strptime(order.order_date, "%Y-%m-%d").month - 1) // 3 + 1
-    value = order.quantity * order.unit_price
-    if value >= 500:
-        size = "large"
-    elif value >= 100:
-        size = "medium"
+    size = np.where(
+        value >= 500, "large",
+        np.where(value >= 100, "medium", "small")
+    )
+
+    chunk["segment"] = "Q" + quarter.astype(str) + " " + size
+
+    counts = chunk.groupby(["region", "segment"]).size()
+
+    if totals is None:
+        totals = counts
     else:
-        size = "small"
-    return f"Q{quarter} {size}"
+        totals = totals.add(counts, fill_value=0)
 
+if totals is None:
+    raise ValueError("The input dataset is empty")
 
-counts = {}
-for order in orders.itertuples(index=False):
-    key = (order.region, segment(order))
-    counts[key] = counts.get(key, 0) + 1
-
-table = pd.Series(counts).rename_axis(["region", "segment"]).unstack(fill_value=0)
+table = totals.astype(int).unstack(fill_value=0)
 table.to_csv(os.path.join(OUT, "segments.csv"))
+
 print("segments: done")

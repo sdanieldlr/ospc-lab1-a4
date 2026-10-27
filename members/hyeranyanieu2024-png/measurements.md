@@ -130,3 +130,31 @@ Fix: Open the output file once and use buffered writes.
 Result: Approximately 81% reduction in elapsed time and 99.54% fewer system calls.
 
 Validation: PASS audit_2025.csv with 8,400,000 rows using tools/check.py.
+
+## Section 6.2 - Segmenting the Orders
+
+Problem: segments.py processed every order individually and repeatedly parsed dates using datetime.strptime.
+
+Cause: Python-level loops and millions of individual date conversions created excessive processing overhead.
+
+Fix: Use vectorized Pandas operations, NumPy classification, and chunked processing with 100,000 orders per chunk.
+
+### Sample performance (100,000 orders)
+
+| Measurement | Before | After |
+|---|---|---|
+| Elapsed | 3.42 s | 2.09 s |
+| User | 3.26 s | 2.00 s |
+| System | 0.51 s | 0.38 s |
+| Peak memory | 133776 KB | 156692 KB |
+
+### Full dataset (8.4 million orders)
+
+- Elapsed: 23.21 s
+- User: 21.32 s
+- System: 2.24 s
+- Peak memory: 188768 KB
+
+Result: Approximately 39% faster on the sample dataset.
+
+Validation: PASS segments.csv using tools/check.py.
