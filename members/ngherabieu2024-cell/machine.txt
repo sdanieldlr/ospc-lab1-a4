@@ -1,0 +1,10 @@
+github_user: ngherabieu2024-cell
+laptop: HP Laptop 15-fd0xxx, Windows 11 Pro
+date: 2026-10-27 16:23 UTC
+cpus_in_container: 12
+architecture: x86_64
+cpu: GenuineIntel 13th Gen Intel(R) Core(TM) i7-1355U 
+kernel: 7.0.12-linuxkit
+docker_memory_kb: 12307576
+container_memory_limit: 2147483648
+container_swap_limit: 0
