@@ -1,0 +1,10 @@
+github_user: JasonZhao223
+laptop: HP laptop, Windows 11
+date: 2026-10-27 17:07 UTC
+cpus_in_container: 22
+architecture: x86_64
+cpu: GenuineIntel Intel(R) Core(TM) Ultra 7 155H 
+kernel: 6.18.33.2-microsoft-standard-WSL2
+docker_memory_kb: 16113832
+container_memory_limit: 2147483648
+container_swap_limit: 0
