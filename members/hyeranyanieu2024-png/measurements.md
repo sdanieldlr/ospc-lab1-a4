@@ -100,3 +100,33 @@ After fix:
 - Result: Completed successfully
 
 Validation: PASS revenue_by_region_month.csv using tools/check.py.
+
+## Section 6.1 - Audit Performance Fix
+
+Problem: audit.py opened and closed the output file for every order.
+
+Cause: Repeated file operations generated excessive system calls and kernel overhead.
+
+Fix: Open the output file once and use buffered writes.
+
+### Performance (8.4 million orders)
+
+| Measurement | Before | After |
+|---|---|---|
+| Elapsed | 252.64 s | 49.04 s |
+| User | 169.99 s | 46.96 s |
+| System | 82.12 s | 2.53 s |
+| Peak memory | 636060 KB | 635972 KB |
+
+### System calls (100,000 orders)
+
+| Call | Before | After |
+|---|---|---|
+| openat | 100691 | 691 |
+| write | 100001 | 17 |
+| close | 100677 | 677 |
+| Total | 301369 | 1385 |
+
+Result: Approximately 81% reduction in elapsed time and 99.54% fewer system calls.
+
+Validation: PASS audit_2025.csv with 8,400,000 rows using tools/check.py.
