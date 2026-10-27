@@ -1,0 +1,10 @@
+github_user: dvillegasieu2024-tech
+laptop: HP OmniBook 7 Laptop 16-ay0xxx, Windows 11 Home
+date: 2026-10-27 16:17 UTC
+cpus_in_container: 16
+architecture: x86_64
+cpu: GenuineIntel Intel(R) Core(TM) Ultra 7 255H 
+kernel: 6.18.33.2-microsoft-standard-WSL2
+docker_memory_kb: 16064144
+container_memory_limit: 2147483648
+container_swap_limit: 0
