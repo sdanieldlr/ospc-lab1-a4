@@ -1,24 +1,37 @@
 """Revenue by region and month (revenue_by_region_month.csv)."""
 
 import os
-
 import pandas as pd
 
 DATA = os.environ.get("DATA", os.path.expanduser("~/data/sales_2025.csv"))
 OUT = os.environ.get("OUT", os.path.expanduser("~/data/out"))
 os.makedirs(OUT, exist_ok=True)
 
-orders = pd.read_csv(DATA)
-size = orders.memory_usage(deep=True).sum() / 2**20
-print(f"report: loaded {len(orders):,} orders ({size:.0f} MiB)")
+totals = None
+rows_processed = 0
 
-orders["order_date"] = pd.to_datetime(orders["order_date"])
-orders["revenue"] = orders["quantity"] * orders["unit_price"]
+for chunk in pd.read_csv(DATA, chunksize=100000):
+    rows_processed += len(chunk)
 
-# The monthly tables first, then the whole year
-months = [orders[orders["order_date"].dt.month == m] for m in range(1, 13)]
-year = pd.concat(months)
+    chunk["order_date"] = pd.to_datetime(chunk["order_date"])
+    chunk["revenue"] = chunk["quantity"] * chunk["unit_price"]
 
-table = year.groupby(["region", year["order_date"].dt.month])["revenue"].sum().unstack()
-table.round(2).to_csv(os.path.join(OUT, "revenue_by_region_month.csv"))
+    monthly = chunk.groupby(
+        ["region", chunk["order_date"].dt.month]
+    )["revenue"].sum()
+
+    if totals is None:
+        totals = monthly
+    else:
+        totals = totals.add(monthly, fill_value=0)
+
+if totals is None:
+    raise ValueError("The input dataset is empty")
+
+table = totals.unstack()
+table.round(2).to_csv(
+    os.path.join(OUT, "revenue_by_region_month.csv")
+)
+
+print(f"report: processed {rows_processed:,} orders")
 print("report: done")

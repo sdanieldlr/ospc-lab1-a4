@@ -77,3 +77,26 @@ Fix: Use the DATA variable, remove error suppression, and enable set -euo pipefa
 | Peak memory | 8108 KB | 8064 KB |
 
 Validation: All six regional extraction files PASS tools/check.py.
+
+## Section 6.1 - Revenue Report Memory Fix
+
+Problem: report.py was killed while processing 8.4 million orders.
+
+Cause: Loading the entire dataset and creating monthly DataFrame copies exceeded the container's 2 GiB memory limit.
+
+Fix: Process the dataset in chunks of 100,000 orders and accumulate monthly revenue totals.
+
+Before fix:
+- Full dataset: killed by OOM
+- Reported table size: 887 MiB
+- Estimated peak memory: approximately 3 GiB
+
+After fix:
+- Orders processed: 8,400,000
+- Elapsed: 28.12 s
+- User: 24.81 s
+- System: 3.66 s
+- Peak memory: 203812 KB
+- Result: Completed successfully
+
+Validation: PASS revenue_by_region_month.csv using tools/check.py.
