@@ -38,3 +38,25 @@ Command: python3 steps/report.py | tee /tmp/report.log
 
 Result: The log was empty.
 Explanation: Python buffered stdout when connected to a pipe. The process was killed before the buffered message could be flushed.
+
+## Section 5.4 - Auditing
+
+### Performance measurements
+
+| Orders | Elapsed | User | System | Peak memory |
+|---|---|---|---|---|
+| 100,000 | 5.55 s | 3.43 s | 1.89 s | 129468 KB |
+| 8,400,000 | 252.64 s | 169.99 s | 82.12 s | 636060 KB |
+
+### System calls (100,000 orders)
+
+openat: 100691
+write: 100001
+close: 100677
+Total: 301369
+
+Sample output file size: 1952269 bytes
+
+Estimated writes with 128 KiB buffering: 15
+
+Diagnosis: The script repeatedly opens, writes to, and closes the output file. Keeping the file open and buffering writes would greatly reduce system-call overhead.
