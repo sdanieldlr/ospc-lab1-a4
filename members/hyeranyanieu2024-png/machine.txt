@@ -1,0 +1,10 @@
+github_user: hyeranyanieu2024-png
+laptop: Microsoft Surface Laptop 4, Windows 11 Enterprise
+date: 2026-10-27 16:21 UTC
+cpus_in_container: 8
+architecture: x86_64
+cpu: GenuineIntel 11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz 
+kernel: 6.18.33.2-microsoft-standard-WSL2
+docker_memory_kb: 8040064
+container_memory_limit: 2147483648
+container_swap_limit: 0
