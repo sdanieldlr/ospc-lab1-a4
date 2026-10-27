@@ -60,3 +60,20 @@ Sample output file size: 1952269 bytes
 Estimated writes with 128 KiB buffering: 15
 
 Diagnosis: The script repeatedly opens, writes to, and closes the output file. Keeping the file open and buffering writes would greatly reduce system-call overhead.
+
+## Section 6.1 - Extraction Fix
+
+Problem: All six regional CSV files were empty.
+
+Cause: Incorrect input file path, hidden grep errors, and missing pipeline error handling.
+
+Fix: Use the DATA variable, remove error suppression, and enable set -euo pipefail.
+
+| Measurement | Before | After |
+|---|---|---|
+| Elapsed | 0.17 s | 8.70 s |
+| User | 0.02 s | 9.15 s |
+| System | 0.13 s | 4.92 s |
+| Peak memory | 8108 KB | 8064 KB |
+
+Validation: All six regional extraction files PASS tools/check.py.
