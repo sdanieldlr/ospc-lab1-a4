@@ -3,7 +3,11 @@
 
 set -euo pipefail
 
-WORKERS=${WORKERS:-4}
+DEFAULT_WORKERS=$(nproc)
+if (( DEFAULT_WORKERS > 4 )); then
+    DEFAULT_WORKERS=4
+fi
+WORKERS=${WORKERS:-$DEFAULT_WORKERS}
 OUT=${OUT:-$HOME/data/out}
 export OUT
 
