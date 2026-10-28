@@ -195,3 +195,17 @@ Four workers were fastest in these sample tests.
 Process cleanup: No matching statistics worker processes remained after interruption. The test did not conclusively establish whether workers had started before the interruption.
 
 Validation: PASS stats.csv with 72 region-month groups using tools/check.py.
+
+### Final Ctrl+C cleanup verification
+
+Command: WORKERS=1 bash steps/stats.sh
+
+Before interruption:
+- Worker PID: 2172
+- Parent PID: 2160
+- Verified using ps -eo pid,ppid,stat,args
+
+After Ctrl+C:
+- The statistics script was interrupted.
+- No matching stats_worker.py processes remained.
+- Process cleanup verified.
