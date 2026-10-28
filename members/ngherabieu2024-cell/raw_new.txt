@@ -1,0 +1,38 @@
+0
+low 0
+high 0
+max 60031
+oom 6
+oom_kill 6
+oom_group_kill 0
+sock_throttled 0
+/home/analyst/data/out:
+total 176428
+-rw-r--r-- 1 analyst analyst 180634390 Oct 28 16:19 audit_2025.csv
+drwxr-xr-x 2 analyst analyst      4096 Oct 27 16:37 extracts
+-rw-r--r-- 1 analyst analyst       959 Oct 28 16:19 revenue_by_region_month.csv
+-rw-r--r-- 1 analyst analyst       633 Oct 28 16:20 segments.csv
+drwxr-xr-x 2 analyst analyst      4096 Oct 28 16:20 stats
+-rw-r--r-- 1 analyst analyst      2220 Oct 28 16:20 stats.csv
+drwxr-xr-x 2 analyst analyst      4096 Oct 27 16:39 stats_input
+
+/home/analyst/data/out/extracts:
+total 285920
+-rw-r--r-- 1 analyst analyst 35098463 Oct 28 16:19 Benelux.csv
+-rw-r--r-- 1 analyst analyst 64372814 Oct 28 16:19 DACH.csv
+-rw-r--r-- 1 analyst analyst 46878336 Oct 28 16:19 France.csv
+-rw-r--r-- 1 analyst analyst 76086137 Oct 28 16:19 Iberia.csv
+-rw-r--r-- 1 analyst analyst 41064279 Oct 28 16:19 Italy.csv
+-rw-r--r-- 1 analyst analyst 29273498 Oct 28 16:19 Nordics.csv
+audit: 8,400,000 lines written
+12.28 s elapsed, 12.74 s user, 0.38 s system, 641076 KB peak memory
+audit: 100,000 lines written
+0.46 s elapsed, 1.58 s user, 0.06 s system, 134776 KB peak memory
+audit: 100,000 lines written
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 61.59    0.008811          12       689        17 openat
+ 31.14    0.004455           6       677           close
+  7.27    0.001040          61        17           write
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.014306          10      1383        17 total
