@@ -32,7 +32,7 @@ Explanation: without the x bit, ./run\_report.sh gives Permission denied, while 
 
 
 
-| Orders | Table size | Elapsed | User | System | Peak memory 
+| Orders | Table size | Elapsed | User | System | Peak memory
 
 | 1,000,000 | 106 MiB | 1.88 s | 2.71 s | 0.24 s | 521012 KB |
 
@@ -143,6 +143,7 @@ New version, full file: ...
 
 
 | Workers | Elapsed | Speed-up |
+
 
 
 | 1 | 37.98 | 1.0x |
