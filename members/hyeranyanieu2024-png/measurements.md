@@ -158,3 +158,54 @@ Fix: Use vectorized Pandas operations, NumPy classification, and chunked process
 Result: Approximately 39% faster on the sample dataset.
 
 Validation: PASS segments.csv using tools/check.py.
+
+## Section 6.3 - Computing Statistics
+
+Problem: stats.sh launched 16 workers by default and did not properly clean up background processes.
+
+Fix: Set the default to 4 workers, track worker PIDs, add signal handlers, and terminate child processes during cleanup.
+
+### Worker comparison (100,000-order sample)
+
+| Workers | Elapsed | User | System |
+|---|---|---|---|
+| 2 | 1.57 s | 3.45 s | 0.20 s |
+| 4 | 1.39 s | 3.81 s | 0.32 s |
+| 8 | 2.36 s | 6.18 s | 1.05 s |
+| 16 | 2.18 s | 9.93 s | 1.90 s |
+
+Four workers were fastest in these sample tests.
+
+### Modified script - Sample
+
+- Workers: 4
+- Elapsed: 1.37 s
+- User: 4.02 s
+- System: 0.31 s
+- Peak memory: 112956 KB
+
+### Modified script - Full dataset
+
+- Workers: 4
+- Elapsed: 34.28 s
+- User: 84.13 s
+- System: 26.46 s
+- Peak memory: 1006452 KB
+
+Process cleanup: No matching statistics worker processes remained after interruption. The test did not conclusively establish whether workers had started before the interruption.
+
+Validation: PASS stats.csv with 72 region-month groups using tools/check.py.
+
+### Final Ctrl+C cleanup verification
+
+Command: WORKERS=1 bash steps/stats.sh
+
+Before interruption:
+- Worker PID: 2172
+- Parent PID: 2160
+- Verified using ps -eo pid,ppid,stat,args
+
+After Ctrl+C:
+- The statistics script was interrupted.
+- No matching stats_worker.py processes remained.
+- Process cleanup verified.
