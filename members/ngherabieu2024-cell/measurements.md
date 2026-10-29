@@ -32,9 +32,7 @@ Explanation: without the x bit, ./run\_report.sh gives Permission denied, while 
 
 
 
-| Orders | Table size | Elapsed | User | System | Peak memory |
-
-|---|---|---|---|---|---|
+| Orders | Table size | Elapsed | User | System | Peak memory 
 
 | 1,000,000 | 106 MiB | 1.88 s | 2.71 s | 0.24 s | 521012 KB |
 
@@ -84,8 +82,6 @@ PIPESTATUS: 2 0 0. pwd: /home/analyst/data/out/extracts.
 
 | Orders | Elapsed | User | System | Peak memory |
 
-|---|---|---|---|---|
-
 | 100,000 | 1.30 s | 2.00 s | 0.37 s | 135348 KB |
 
 | 8,400,000 | 59.79 s | 43.18 s | 17.54 s | 643688 KB |
@@ -128,15 +124,7 @@ Extracts step alone (new): ...
 
 | | Elapsed | User | System | Peak memory |
 
-|---|---|---|---|---|
 
-| Sample, old | ... | ... | ... | ... |
-
-| Sample, new | ... | ... | ... | ... |
-
-| Full file, old | ... | ... | ... | ... |
-
-| Full file, new | ... | ... | ... | ... |
 
 
 
@@ -156,7 +144,6 @@ New version, full file: ...
 
 | Workers | Elapsed | Speed-up |
 
-|---|---|---|
 
 | 1 | 37.98 | 1.0x |
 
