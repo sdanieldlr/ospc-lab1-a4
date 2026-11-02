@@ -51,13 +51,28 @@ Each member ran `tools/sweep.sh` with 1, 2, 4, 8, and 16 workers, three times pe
 
 ![Elapsed time against the number of workers](results/sweep.png)
 
-- How does the elapsed time change with the number of workers on each laptop? Jason, David, Leyre, and Sergio recorded their lowest medians at 16 workers (10.38 s, 8.76 s, 3.92 s, and 27.12 s). Nadia was fastest at eight (22.91 s, compared with 24.01 s at 16). Harutyun's Surface Laptop was almost unchanged between four and eight (43.25 s and 42.85 s) and slowed to 44.38 s at 16. We did not test more than 16 workers.
-- Why do the curves differ? Harutyun's Surface has 4 cores/8 threads, and moving from four to eight workers saved only 0.40 s in the median. Nadia's 10-core/12-thread laptop slowed at 16, while Sergio's 8-core/16-thread laptop continued improving up to 16. Leyre (14 cores/14 threads), Jason (16 cores/22 threads), and David (16 cores/16 threads) also improved through 16. Sergio's extra logical threads may have helped, but we cannot establish that from these timings alone. Harutyun's Surface gained almost nothing beyond four workers.
-- Which default worker count did we choose, and why? We chose `min(nproc, 4)` because the sample took 1.39 s with four workers versus 2.18 s with 16. This is a conservative default rather than the fastest setting for every laptop, so the `WORKERS` override remains available.
+### How does the elapsed time change with the number of workers on each laptop?: 
+
+- Jason, David, Leyre, and Sergio recorded their lowest medians at 16 workers (10.38 s, 8.76 s, 3.92 s, and 27.12 s). 
+- Nadia was fastest at eight (22.91 s, compared with 24.01 s at 16). 
+- Harutyun's Surface Laptop was almost unchanged between four and eight (43.25 s and 42.85 s) and slowed to 44.38 s at 16. 
+- We did not test more than 16 workers.
+
+### Why do the curves differ? 
+
+- Harutyun's Surface has 4 cores/8 threads, and moving from four to eight workers saved only 0.40 s in the median. 
+- Nadia's 10-core/12-thread laptop slowed at 16, while Sergio's 8-core/16-thread laptop continued improving up to 16. 
+- Leyre (14 cores/14 threads), Jason (16 cores/22 threads), and David (16 cores/16 threads) also improved through 16. 
+- Sergio's extra logical threads may have helped, but we cannot make that conclusion from these timings alone. 
+- Harutyun's Surface gained almost nothing beyond four workers.
+
+### Which default worker count did we choose, and why? 
+
+We chose `min(nproc, 4)` because the sample took 1.39 s with four workers versus 2.18 s with 16. This is a conservative default rather than the fastest setting for every laptop, so the `WORKERS` override remains available.
 
 ## Use of generative AI
 
-We used ChatGPT (OpenAI) to discuss debugging results, suggest code optimizations, and draft or edit the explanations in this report using our own measurements. The main discussions covered chunked CSV reading, pipeline failures, file-opening costs, Pandas/NumPy vectorization, and process cleanup. All timings and output checks reported above came from the team's runs.
+We used ChatGPT (OpenAI) and the IE AI Engine ONEChat to discuss debugging results, suggest code optimizations, and draft or edit the explanations in this report using our own measurements. The main discussions covered chunked CSV reading, pipeline failures, file-opening costs, Pandas/NumPy vectorization, and process cleanup. All timings and output checks reported above came from the team's runs.
 
 Examples of original prompts used to check technical concepts (quoted verbatim):
 
