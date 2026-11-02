@@ -27,7 +27,7 @@ fixed both problems with chmod +x run_report and git update-index --chmod=+x run
 
 ## 5.3 Task 2: Extracting Data
 
-- The files were empty because extracts.sh pointed grep to a non-existent input. We're working in the directory ~/data/out/extracts, and so ~/data/sales_2025.csv points to a non-existent file.
+- The files were empty because extracts.sh pointed grep to a non-existent input. We're working in the directory ~/data/out/extracts, and so ../data/sales_2025.csv points to a non-existent file.
 
 - "echo" prints text to the terminal, so it printed that it was done.
 
