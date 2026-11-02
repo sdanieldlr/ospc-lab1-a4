@@ -1,4 +1,4 @@
-"""Number of orders per region, quarter and order size (segments.csv)."""
+"""Number of orders per region, quarter and order size."""
 
 import os
 import pandas as pd
@@ -8,7 +8,7 @@ DATA = os.environ.get("DATA", os.path.expanduser("~/data/sales_2025.csv"))
 OUT = os.environ.get("OUT", os.path.expanduser("~/data/out"))
 os.makedirs(OUT, exist_ok=True)
 
-totals = None
+all_counts = []
 
 for chunk in pd.read_csv(
     DATA,
@@ -19,23 +19,37 @@ for chunk in pd.read_csv(
     value = chunk["quantity"] * chunk["unit_price"]
 
     size = np.where(
-        value >= 500, "large",
-        np.where(value >= 100, "medium", "small")
+        value >= 500, 2,
+        np.where(value >= 100, 1, 0)
     )
 
-    chunk["segment"] = "Q" + quarter.astype(str) + " " + size
+    counts = chunk.groupby(
+        ["region", quarter, size]
+    ).size()
 
-    counts = chunk.groupby(["region", "segment"]).size()
+    all_counts.append(counts)
 
-    if totals is None:
-        totals = counts
-    else:
-        totals = totals.add(counts, fill_value=0)
-
-if totals is None:
+if not all_counts:
     raise ValueError("The input dataset is empty")
 
-table = totals.astype(int).unstack(fill_value=0)
+totals = pd.concat(all_counts).groupby(level=[0, 1, 2]).sum()
+
+table = totals.unstack(level=[1, 2], fill_value=0)
+
+table.columns = [
+    f"Q{quarter} {['small', 'medium', 'large'][size]}"
+    for quarter, size in table.columns
+]
+
+table = table.reindex(
+    columns=[
+        f"Q{q} {s}"
+        for q in range(1, 5)
+        for s in ["large", "medium", "small"]
+    ],
+    fill_value=0
+)
+
 table.to_csv(os.path.join(OUT, "segments.csv"))
 
 print("segments: done")
