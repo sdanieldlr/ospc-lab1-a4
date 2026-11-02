@@ -6,8 +6,9 @@ not whole screens.
 
 ## Warm-up: Generating the report
 
-- What happened, and why:
-- Your fix, and how it reached your teammates:
+- What happened, and why:The initial execution appeared to hang while the statistics script was running. 
+I investigated the running processes and tested the script separately inside the Docker container
+- Your fix, and how it reached your teammates: 
 
 ## Task 1: Generating the report… again
 
@@ -60,6 +61,11 @@ Every member runs `tools/sweep.sh` on their own laptop. Then run
 - Why do the curves of your laptops differ? Use the cores and threads of each
   laptop, listed in `TEAM.md`.
 - Which default number of workers did you choose for `stats.sh`, and why?
+- The average elapsed time decreased from 36.34 seconds with 1 worker to 10.37 seconds with 16 workers. However, improvements became smaller as the number of workers increased.
+
+- My laptop has an Intel Core Ultra 7 155H processor, with 11 physical cores and 22 logical CPUs. This allows multiple tasks to run in parallel.
+
+- I chose 4 workers as the default because it provides a reasonable balance between execution speed and resource consumption.
 
 ## Use of generative AI
 
