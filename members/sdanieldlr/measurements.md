@@ -35,6 +35,8 @@ fixed both problems with chmod +x run_report and git update-index --chmod=+x run
 
 - -e = errexit (exits when there’s an error). -u = unset variable (variable with no assigned value). -o = for activating a named shell option. pipefail = the shell option in question (fails the whole pipeline if any command fails). We put set -euo pipefail at the beginning of the script to set its behavior (before the rest of the commands).
 
+- without pipefail bash reaches the last command (which succeeds) and counts it as a success (exit status 0) even though grep failed
+
 ## 5.4 Task 3: Auditing
 
 Sample of 100,000 orders:
@@ -97,7 +99,7 @@ The system call being placed inside the for loop increases the kernel time. The 
 
 - remove "open(path,"w").close()" # we don't need it if we're already doing it later in the script
 - change "with open(path, "a") as f:" to "with open(path, "w") as f:"
-- place the for loop inside "with open(path, "a") as f:" instead
+- place the for loop inside "with open(path, "w") as f:" instead
 
 | Measurement | Before | After |
 |---|---|---|
